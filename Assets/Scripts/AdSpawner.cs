@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdSpawner : MonoBehaviour
+namespace RaidAI
 {
-
-    public GameObject adPrefab;
-    
-    // Start is called before the first frame update
-    void Start()
+    public class AdSpawner : MonoBehaviour
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // Spawn a new adversary when the user presses the space bar
-        if (Input.GetKeyUp("space"))
+        public GameObject adPrefab;
+
+        // Start is called before the first frame update
+        void Start()
         {
-            Instantiate(adPrefab, transform.position, Quaternion.identity);
-        }
-    }
 
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            // Spawn a new adversary when the user presses the space bar
+            if (Input.GetKeyUp("space"))
+            {
+                Instantiate(adPrefab, transform.position, Quaternion.identity);
+            }
+        }
+
+    }
 }

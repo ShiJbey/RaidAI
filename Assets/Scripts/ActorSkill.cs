@@ -2,8 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActorSkill
+namespace RaidAI
 {
+    [CreateAssetMenu]
+    public class ActorSkill : ScriptableObject
+    {
+
+        public string skillName;
+        public Sprite icon;
+        public string description;
+
+        public int requiredLevel;
+        public float requiredExp;
+
+        public List<AbilityType> effectedTypes = new List<AbilityType>();
+        public List<float> effectedAmmounts = new List<float>();
+
+        public bool beenSelected;
+
+
+        private float cost;
+        private float cooldown;
+        private float damage;
+
+        void ApplyTo(Actor target)
+        {
+
+        }
+
+
+    }
+
     public enum Element
     {
         NONE,
@@ -11,32 +40,18 @@ public class ActorSkill
         WATER,
         AIR,
         EARTH
-    };
+    }
 
     public enum Range
     {
         SHORT,
         MID,
         LONG
-    };
+    }
 
     public enum EffectType
     {
         DAMAGE,
         BUFF,
-    };
-
-    private string name;
-    private string description;
-
-    private float cost;
-    private float cooldown;
-    private float damage;
-
-    void ApplyTo(Actor target)
-    {
-
     }
-
-
 }
