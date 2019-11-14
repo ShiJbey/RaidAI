@@ -9,9 +9,9 @@ using UnityEngine.UI;
  */
 namespace RaidAI
 {
-    public class LifeBarManager : MonoBehaviour
+    public class LifeBar : MonoBehaviour
     {
-        private ActorStats statManager;
+        public Actor actor;
         public GameObject healthBarPrefab;
 
         // For now lets just let these represent the different life
@@ -23,7 +23,7 @@ namespace RaidAI
         // Start is called before the first frame update
         void Start()
         {
-            FindStatManager();
+            FillBars();
         }
 
         // Update is called once per frame
@@ -35,7 +35,7 @@ namespace RaidAI
         private void FillBars()
         {
             Image[] healthBars = GetComponentsInChildren<Image>();
-            float lifePercentage = statManager.health / statManager.baseHealth;
+            float lifePercentage = actor.health.Value / actor.health.BaseValue;
             float remainder = lifePercentage;
 
             // Fill existing bars and remove unused bars
@@ -64,34 +64,6 @@ namespace RaidAI
                 additionalBar.transform.parent = transform;
                 // Set the fill
                 additionalBar.GetComponent<Image>().fillAmount = amountToFill;
-            }
-        }
-
-        private void FindStatManager()
-        {
-            statManager = null;
-            Transform p = transform.parent;
-            while (statManager == null && p != null)
-            {
-                ActorStats stats = p.GetComponent<ActorStats>();
-                if (stats != null)
-                {
-                    statManager = stats;
-                }
-                else if (p.tag.Contains("Agent"))
-                {
-                    // We dont want to look further than the agent
-                    // this is currently attachted to
-                    break;
-                }
-                else
-                {
-                    p = p.parent;
-                }
-            }
-            if (statManager == null)
-            {
-                Debug.LogError("No ActorStat component found attached to parent");
             }
         }
     }

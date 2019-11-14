@@ -8,17 +8,8 @@ namespace RaidAI
     public abstract class Actor : Agent
     {
         // Stats
-        private float baseLife;
-        private float baseMana;
-        private float baseAttack;
-        private float baseDefense;
-
-        // Current Stats
-        public float health = 100.0f;
-        public float mana = 100.0f;
-        public float attack = 100.0f;
-        public float defense = 100.0f;
-        public float speed = 100.0f;
+        [HideInInspector]
+        public ActorStat health = new ActorStat(100f);
 
         // Movement
         public float rotateSpeed = 1f;

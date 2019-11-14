@@ -1582,11 +1582,6 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 1
-  health: 100
-  mana: 100
-  attack: 100
-  defense: 100
-  speed: 100
   rotateSpeed: 180
   movementSpeed: 20
 --- !u!114 &6710283295751454854
@@ -1668,28 +1663,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8376227922486525264}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8041048236655440603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8041048236655440602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b56a230f57038444892b379ace0858c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseHealth: 100
-  baseMana: 100
-  baseAttack: 100
-  baseDefense: 100
-  baseSpeed: 100
-  health: 100
-  mana: 100
-  attack: 100
-  defense: 100
-  speed: 100
 --- !u!114 &8041048236655440604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1707,11 +1680,6 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 1
-  health: 100
-  mana: 100
-  attack: 100
-  defense: 100
-  speed: 100
   rotateSpeed: 180
   movementSpeed: 20
 --- !u!114 &8041048236655440605

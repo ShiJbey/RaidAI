@@ -9,6 +9,7 @@ namespace RaidAI
     public class BossAgent : Actor
     {
         private Rigidbody rBody;
+        private Transform aggro;
 
         // Start is called before the first frame update
         void Start()
@@ -20,6 +21,18 @@ namespace RaidAI
         void Update()
         {
 
+        }
+
+        public Transform Aggro
+        {
+            get
+            {
+                return aggro;
+            }
+            set
+            {
+                aggro = value;
+            }
         }
 
         public override void AgentReset()
@@ -34,9 +47,16 @@ namespace RaidAI
 
         public override float[] Heuristic()
         {
-            var action = new float[2];
-            action[0] = Input.GetAxis("Horizontal");
-            action[1] = Input.GetAxis("Vertical");
+            float[] action =  { 0f, 0f };
+            // For now we want the boss to simply turn toward
+            // the player with its aggro
+            if (aggro != null)
+            {
+                Vector3 aggroDir = aggro.position - transform.position;
+                float angle = Vector3.Angle(aggroDir, transform.forward);
+                action[0] = angle / 180f;
+                action[1] = 0;
+            }
             return action;
         }
 
@@ -62,6 +82,11 @@ namespace RaidAI
         public override void AgentOnDone()
         {
             base.AgentOnDone();
+        }
+
+        private Vector3 getPositionPleyerCentroid()
+        {
+            return Vector3.zero;
         }
     }
 }
