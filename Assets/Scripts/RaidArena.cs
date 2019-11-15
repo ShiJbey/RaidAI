@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace RaidAI
 {
-    public class SkillSlot : MonoBehaviour
+    public class RaidArena : MonoBehaviour
     {
+
+        public SpawnManager spawnManager;
+
         // Start is called before the first frame update
         void Start()
         {

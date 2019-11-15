@@ -35,7 +35,7 @@ namespace RaidAI
         private void FillBars()
         {
             Image[] healthBars = GetComponentsInChildren<Image>();
-            float lifePercentage = actor.health.Value / actor.health.BaseValue;
+            float lifePercentage = actor.health.Value / actor.health.baseValue;
             float remainder = lifePercentage;
 
             // Fill existing bars and remove unused bars

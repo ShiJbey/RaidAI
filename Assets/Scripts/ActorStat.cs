@@ -5,10 +5,11 @@ using System;
 using System.Collections.ObjectModel;
 
 namespace RaidAI
-{   [Serializable]
+{
+    [Serializable]
     public class ActorStat
     {
-        protected float baseValue;
+        public float baseValue;
         protected float lastBaseValue = float.MinValue;
         protected float value;
         protected bool isDirty;
@@ -41,14 +42,6 @@ namespace RaidAI
                     isDirty = false;
                 }
                 return value;
-            }
-        }
-
-        public virtual float BaseValue
-        {
-            get
-            {
-                return baseValue;
             }
         }
 

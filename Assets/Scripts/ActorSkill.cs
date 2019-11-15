@@ -25,7 +25,7 @@ namespace RaidAI
         private float cooldown;
         private float damage;
 
-        void ApplyTo(Actor target)
+        public void Activate(Actor target)
         {
 
         }

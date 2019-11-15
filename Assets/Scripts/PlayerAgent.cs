@@ -10,29 +10,39 @@ namespace RaidAI
     {
         private Rigidbody rBody;
         private Transform boss;
+        
 
         // Start is called before the first frame update
         void Start()
         {
-            rBody = GetComponent<Rigidbody>();
-            boss = GameObject.FindGameObjectWithTag("Boss").transform;
+            
         }
 
         // Update is called once per frame
         void Update()
         {
+        
+        }
 
+        public override void InitializeAgent()
+        {
+            rBody = GetComponent<Rigidbody>();
+            boss = GameObject.FindGameObjectWithTag("Boss").transform;
+            this.rBody.angularVelocity = Vector3.zero;
+            this.rBody.velocity = Vector3.zero;
+            this.transform.position = new Vector3(0f, 0.5f, -10f);
         }
 
         public override void AgentReset()
         {
-            // Select a new spawn point
-            if (this.transform.position.y < 0)
+            SpawnPoint point = raidArena.spawnManager.GetAvailableSpawn();
+            if (point != null)
             {
                 this.rBody.angularVelocity = Vector3.zero;
                 this.rBody.velocity = Vector3.zero;
-                this.transform.position = new Vector3(0f, 0.5f, 0f);
+                this.transform.position = point.transform.position;
             }
+            boss.GetComponent<Agent>().Done();
         }
 
         public override float[] Heuristic()
@@ -61,7 +71,7 @@ namespace RaidAI
                                                       boss.position);
 
             // Reached target
-            if (distanceToTarget < 1.42f)
+            if (distanceToTarget < 2.7f)
             {
                 SetReward(1.0f);
                 Done();
@@ -72,11 +82,6 @@ namespace RaidAI
             {
                 Done();
             }
-        }
-
-        public override void AgentOnDone()
-        {
-            base.AgentOnDone();
         }
     }
 }
