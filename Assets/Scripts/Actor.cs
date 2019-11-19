@@ -7,6 +7,8 @@ namespace RaidAI
 {
     public abstract class Actor : Agent
     {
+        protected Rigidbody m_rBody;
+
         // Stats
         public ActorStat health = new ActorStat(100f);
         public ActorStat mana = new ActorStat(100f);
@@ -22,10 +24,22 @@ namespace RaidAI
         public List<ActorSkill> skills;
 
         // Arena reference for respawning, etc
-        public RaidArena raidArena;
+        public RaidArena m_raidArena;
 
-        // Update is called once per frame
-        void Update()
+        public override void InitializeAgent()
+        {
+            base.InitializeAgent();
+
+            // Reset rotation
+            transform.rotation = Quaternion.identity;
+
+            // Reset the rigid body
+            m_rBody = GetComponent<Rigidbody>();
+            m_rBody.angularVelocity = Vector3.zero;
+            m_rBody.velocity = Vector3.zero;
+        }
+
+        public override void AgentAction(float[] vectorAction, string textAction)
         {
             // Check if the actor is dead
             if (health.Value <= 0.0f)
@@ -33,6 +47,30 @@ namespace RaidAI
                 SetReward(-1.0f);
                 Done();
             }
+        }
+
+        public List<float> GetCompleteState()
+        {
+            List<float> state = new List<float>();
+            state.Add(transform.position.x);
+            state.Add(transform.position.y);
+            state.Add(transform.position.z);
+            state.Add(health.Value);
+            state.Add(mana.Value);
+            state.Add(energy.Value);
+            state.Add(attack.Value);
+            state.Add(defense.Value);
+            return state;
+        }
+
+        public List<float> GetPartialState()
+        {
+            List<float> state = new List<float>();
+            state.Add(transform.position.x);
+            state.Add(transform.position.y);
+            state.Add(transform.position.z);
+            state.Add(health.Value);
+            return state;
         }
 
         public bool IsAlive()

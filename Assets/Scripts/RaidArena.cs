@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace RaidAI
 {
@@ -45,6 +46,26 @@ namespace RaidAI
                     ResetArena();
                 }
             }
+        }
+
+        public List<float> GetTeammateStates(PlayerAgent agent, bool complete)
+        {
+            List<float> states = new List<float>();
+            foreach (PlayerAgent player in players)
+            {
+                if (agent != player)
+                {
+                    if (complete)
+                    {
+                        states.AddRange(player.GetCompleteState());
+                    }
+                    else
+                    {
+                        states.AddRange(player.GetPartialState());
+                    }
+                }
+            }
+            return states;
         }
 
         bool IsPartyAlive()

@@ -8,50 +8,101 @@ namespace RaidAI
 {
     public class PlayerAgent : Actor
     {
-        public Transform boss;
-        private Rigidbody rBody;
-        Collider m_Collider;
-        RaycastHit m_Hit;
-        bool m_HitDetect;
-        float m_MaxDistance;
+        public PlayerClass m_playerClass;
+        public Transform m_boss;
+
+        
+        private Material m_Material;
+        private RaycastHit m_Hit;
+        private bool m_HitDetect;
+        private float m_MaxDistance;
 
 
         public override void InitializeAgent()
         {
-            rBody = GetComponent<Rigidbody>();
-            this.rBody.angularVelocity = Vector3.zero;
-            this.rBody.velocity = Vector3.zero;
-            m_Collider = GetComponent<Collider>();
+            base.InitializeAgent();
+
+            // Set the stats using the PlayerClass
+            health.baseValue = m_playerClass.health.baseValue;
+            mana.baseValue = m_playerClass.mana.baseValue;
+            energy.baseValue = m_playerClass.energy.baseValue;
+            attack.baseValue = m_playerClass.attack.baseValue;
+            defense.baseValue = m_playerClass.defense.baseValue;
+            
+            // Set the agent color
+            m_Material = GetComponent<Renderer>().material;
+            m_Material.color = m_playerClass.color;
+
+            // Reset rotation
+            transform.rotation = Quaternion.identity;
+
+            // Reset the rigid body
+            m_rBody = GetComponent<Rigidbody>();
+            m_rBody.angularVelocity = Vector3.zero;
+            m_rBody.velocity = Vector3.zero;
+
+            // Box Caster
             m_MaxDistance = 2.0f;
         }
 
         public override void AgentReset()
         {
-            health.baseValue = 100;
-            SpawnPoint point = raidArena.spawnManager.GetAvailableSpawn();
+            // Reset the agent's health points
+            health.baseValue = m_playerClass.health.baseValue;
+
+            // Find a respawn point
+            SpawnPoint point = m_raidArena.spawnManager.GetAvailableSpawn();
             if (point != null)
             {
+                // Make sure no-one can spawn below us
                 point.Available = false;
-                this.rBody.angularVelocity = Vector3.zero;
-                this.rBody.velocity = Vector3.zero;
-                this.transform.position = point.transform.position;
+
+                // Reset rotation
+                transform.position = point.transform.position;
+                transform.rotation = Quaternion.identity;
+
+                // Reset the rigid body
+                m_rBody = GetComponent<Rigidbody>();
+                m_rBody.angularVelocity = Vector3.zero;
+                m_rBody.velocity = Vector3.zero;
+                m_MaxDistance = 2.0f;
             }
         }
 
         public override float[] Heuristic()
         {
             var action = new float[3];
+            // Rotate around the y-axis
             action[0] = Input.GetAxis("Horizontal");
+            // Move forward or backward
             action[1] = Input.GetAxis("Vertical");
-            action[2] = Input.GetButtonUp("Fire1") ? 1.0f : 0.0f ;
+
+            // Which move to use
+            if (Input.GetKey(KeyCode.Alpha0))
+            {
+                action[2] = 0;
+            }
+            if (Input.GetKey(KeyCode.Alpha1))
+            {
+                action[2] = 1;
+            }
+            if (Input.GetKey(KeyCode.Alpha2))
+            {
+                action[2] = 2;
+            }
+            if (Input.GetKey(KeyCode.Alpha3))
+            {
+                action[2] = 3;
+            }
+            
             return action;
         }
 
         public override void CollectObservations()
         {
-            AddVectorObs(this.transform.position);
-            AddVectorObs(this.transform.rotation.eulerAngles.y);
-            AddVectorObs(this.boss.position);
+            AddVectorObs(GetCompleteState());  // 8
+            AddVectorObs(m_raidArena.GetTeammateStates(this, false)); // 4 * 3
+            AddVectorObs(m_boss.GetComponent<BossAgent>().GetPartialState()); // 4 
         }
 
         public override void AgentAction(float[] vectorAction, string textAction)
@@ -67,7 +118,7 @@ namespace RaidAI
                 // Fire the laser
                 int layerMask = 1 << 9;
                 Vector3 boxCastHalfExt = new Vector3(0.5f, 0.5f, 0.5f);
-                m_HitDetect = Physics.BoxCast(m_Collider.bounds.center, boxCastHalfExt, transform.forward, out m_Hit, transform.rotation, m_MaxDistance, layerMask);
+                m_HitDetect = Physics.BoxCast(transform.position, boxCastHalfExt, transform.forward, out m_Hit, transform.rotation, m_MaxDistance, layerMask);
                 if (m_HitDetect)
                 {
                     if (m_Hit.collider.tag == "Boss")
@@ -83,8 +134,8 @@ namespace RaidAI
             }
 
             // Rewards
-            float distanceToTarget = Vector3.Distance(this.transform.position,
-                                                      boss.position);
+            float distanceToTarget = Vector3.Distance(transform.position,
+                                                      m_boss.position);
 
             // Reached target
             if (distanceToTarget < 2.7f)
@@ -95,7 +146,7 @@ namespace RaidAI
             }
 
             // Fell off platform
-            if (this.transform.position.y < 0)
+            if (transform.position.y < 0)
             {
                 SetReward(-1.0f);
                 Done();
@@ -103,6 +154,15 @@ namespace RaidAI
             }
 
             SetReward(-1.0f);
+
+            // Check if the actor is dead
+            if (health.Value <= 0.0f)
+            {
+                SetReward(-1.0f);
+                Done();
+            }
+
+            base.AgentAction(vectorAction, textAction);
         }
 
         void OnDrawGizmos()
@@ -113,17 +173,17 @@ namespace RaidAI
             if (m_HitDetect)
             {
                 //Draw a Ray forward from GameObject toward the hit
-                Gizmos.DrawRay(m_Collider.bounds.center, transform.forward.normalized * m_Hit.distance);
+                Gizmos.DrawRay(transform.position, transform.forward.normalized * m_Hit.distance);
                 //Draw a cube that extends to where the hit exists
-                Gizmos.DrawWireCube(m_Collider.bounds.center + transform.forward.normalized * m_Hit.distance, transform.localScale);
+                Gizmos.DrawWireCube(transform.position + transform.forward.normalized * m_Hit.distance, transform.localScale);
             }
             //If there hasn't been a hit yet, draw the ray at the maximum distance
             else
             {
                 //Draw a Ray forward from GameObject toward the maximum distance
-                Gizmos.DrawRay(m_Collider.bounds.center, transform.forward * m_MaxDistance);
+                Gizmos.DrawRay(transform.position, transform.forward * m_MaxDistance);
                 //Draw a cube at the maximum distance
-                Gizmos.DrawWireCube(m_Collider.bounds.center + transform.forward * m_MaxDistance, transform.localScale);
+                Gizmos.DrawWireCube(transform.position + transform.forward * m_MaxDistance, transform.localScale);
             }
         }
     }

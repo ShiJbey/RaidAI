@@ -373,10 +373,12 @@ MonoBehaviour:
     baseValue: 10
   defense:
     baseValue: 10
-  rotateSpeed: 180
-  movementSpeed: 20
+  rotateSpeed: 320
+  movementSpeed: 12
   skills: []
-  raidArena: {fileID: 0}
+  m_raidArena: {fileID: 0}
+  m_playerClass: {fileID: 0}
+  m_boss: {fileID: 0}
 --- !u!114 &8041048236655440605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,9 +392,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 7
+    vectorObservationSize: 24
     numStackedVectorObservations: 1
-    vectorActionSize: 02000000
+    vectorActionSize: 03000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 1
   m_Model: {fileID: 5022602860645237092, guid: 36ae910aaec75244e891999eca24bce1, type: 3}
