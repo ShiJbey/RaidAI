@@ -9,7 +9,7 @@ namespace RaidAI
     public class BossAgent : Actor
     {
         private Rigidbody rBody;
-        public Transform aggro;
+        private Transform aggro;
 
         // Start is called before the first frame update
         void Start()
@@ -25,6 +25,7 @@ namespace RaidAI
 
         public override void InitializeAgent()
         {
+            
             rBody = GetComponent<Rigidbody>();
             this.rBody.angularVelocity = Vector3.zero;
             this.rBody.velocity = Vector3.zero;
@@ -45,12 +46,10 @@ namespace RaidAI
 
         public override void AgentReset()
         {
-            if (this.transform.position.y < 0)
-            {
-                this.rBody.angularVelocity = Vector3.zero;
-                this.rBody.velocity = Vector3.zero;
-                this.transform.position = new Vector3(0f, 0.5f, 0f);
-            }
+            health.baseValue = 100;
+            this.rBody.angularVelocity = Vector3.zero;
+            this.rBody.velocity = Vector3.zero;
+            this.transform.position = new Vector3(0f, 0.5f, 0f);
         }
 
         public override float[] Heuristic()
@@ -88,11 +87,6 @@ namespace RaidAI
             {
                 Done();
             }
-        }
-
-        public override void AgentOnDone()
-        {
-            base.AgentOnDone();
         }
 
         private Vector3 getPositionPleyerCentroid()

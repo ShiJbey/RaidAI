@@ -35,6 +35,11 @@ namespace RaidAI
             }
         }
 
+        public bool IsAlive()
+        {
+            return health.Value > 0;
+        }
+
         // Using Skills
         public void UseSkill(ActorSkill skill, Actor target)
         {
