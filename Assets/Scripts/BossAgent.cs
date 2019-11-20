@@ -45,6 +45,8 @@ namespace RaidAI
 
         public override void AgentReset()
         {
+            health.RemoveAllModifiers();
+
             // Reset transform
             transform.position = new Vector3(0f, 3f, 0f);
             transform.rotation = Quaternion.identity;
@@ -53,9 +55,6 @@ namespace RaidAI
             m_rBody = GetComponent<Rigidbody>();
             m_rBody.angularVelocity = Vector3.zero;
             m_rBody.velocity = Vector3.zero;
-
-            // Reset Health
-            health.baseValue = 100;
         }
 
         public override float[] Heuristic()

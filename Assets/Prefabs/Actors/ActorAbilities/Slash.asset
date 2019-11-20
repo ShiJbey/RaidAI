@@ -9,18 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf0d36ffcbf51b145bbeff5c62dd68f9, type: 3}
-  m_Name: Warrior
+  m_Script: {fileID: 11500000, guid: 474a50692fe5bd24e849b10a6217338a, type: 3}
+  m_Name: Slash
   m_EditorClassIdentifier: 
-  classID: 0
-  color: {r: 0.16113384, g: 0.6698113, b: 0.28326106, a: 1}
-  health:
-    baseValue: 100
-  mana:
-    baseValue: 100
-  energy:
-    baseValue: 100
-  attack:
+  m_skillName: Slash
+  m_energyCost:
     baseValue: 10
-  defense:
-    baseValue: 10
+  m_manaCost:
+    baseValue: 0
+  m_cooldown:
+    baseValue: 1
+  m_element: 0
+  m_hitbox: {fileID: 11400000, guid: c004eb47bdc173945818b9e851f56b5e, type: 2}

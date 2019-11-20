@@ -11,6 +11,7 @@ namespace RaidAI
 {
     public class LifeBar : MonoBehaviour
     {
+        public Transform cam;
         public Actor actor;
         public GameObject healthBarPrefab;
 
@@ -29,6 +30,13 @@ namespace RaidAI
         // Update is called once per frame
         void Update()
         {
+            if (cam != null)
+            {
+                float step = 10f * Time.deltaTime;
+                Vector3 targetDir = cam.position - transform.position;
+                Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+                transform.rotation = Quaternion.LookRotation(newDir);
+            }
             FillBars();
         }
 
@@ -36,35 +44,38 @@ namespace RaidAI
         {
             Image[] healthBars = GetComponentsInChildren<Image>();
             float lifePercentage = actor.health.Value / actor.health.baseValue;
-            float remainder = lifePercentage;
+            float amountToFill = Mathf.Min(1.0f, lifePercentage);
+            healthBars[0].fillAmount = amountToFill;
 
-            // Fill existing bars and remove unused bars
-            for (int i = 0; i < healthBars.Length; i++)
-            {
-                if (remainder > 0.0f)
-                {
-                    float amountToFill = Mathf.Min(1.0f, remainder);
-                    healthBars[i].fillAmount = amountToFill;
-                    remainder -= amountToFill;
-                }
-                else
-                {
-                    Destroy(healthBars[i]);
-                }
-            }
+            //float remainder = lifePercentage;
 
-            //int addedCount = 0;
-            // Add new bars if necessary
-            while (remainder > 0)
-            {
-                float amountToFill = Mathf.Min(1.0f, remainder);
-                remainder -= amountToFill;
-                // Spawn a new health bar and set the amount
-                GameObject additionalBar = Instantiate(healthBarPrefab);
-                additionalBar.transform.parent = transform;
-                // Set the fill
-                additionalBar.GetComponent<Image>().fillAmount = amountToFill;
-            }
+            //// Fill existing bars and remove unused bars
+            //for (int i = 0; i < healthBars.Length; i++)
+            //{
+            //    if (remainder > 0.0f)
+            //    {
+            //        float amountToFill = Mathf.Min(1.0f, remainder);
+            //        healthBars[i].fillAmount = amountToFill;
+            //        remainder -= amountToFill;
+            //    }
+            //    else
+            //    {
+            //        Destroy(healthBars[i]);
+            //    }
+            //}
+
+            ////int addedCount = 0;
+            //// Add new bars if necessary
+            //while (remainder > 0)
+            //{
+            //    float amountToFill = Mathf.Min(1.0f, remainder);
+            //    remainder -= amountToFill;
+            //    // Spawn a new health bar and set the amount
+            //    GameObject additionalBar = Instantiate(healthBarPrefab);
+            //    additionalBar.transform.parent = transform;
+            //    // Set the fill
+            //    additionalBar.GetComponent<Image>().fillAmount = amountToFill;
+            //}
         }
     }
 }

@@ -1,57 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAgents;
 
 namespace RaidAI
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu (menuName = "Actor/Skills/ActorSkill")]
     public class ActorSkill : ScriptableObject
     {
+        public string m_skillName;
+        public ActorStat m_energyCost;
+        public ActorStat m_manaCost;
+        public ActorStat m_cooldown;
+        public Element m_element;
+        public AbilityHitbox m_hitbox;
 
-        public string skillName;
-        public Sprite icon;
-        public string description;
-
-        public int requiredLevel;
-        public float requiredExp;
-
-        public List<AbilityType> effectedTypes = new List<AbilityType>();
-        public List<float> effectedAmmounts = new List<float>();
-
-        public bool beenSelected;
-
-
-        private float cost;
-        private float cooldown;
-        private float damage;
-
+        // Applies the current attack to the target
         public void Activate(Actor target)
         {
 
         }
-
-
     }
 
     public enum Element
     {
-        NONE,
-        FIRE,
-        WATER,
-        AIR,
-        EARTH
+        None,
+        Fire,
+        Water,
+        Air,
+        Earth
     }
 
-    public enum Range
+    public enum SkillType
     {
-        SHORT,
-        MID,
-        LONG
-    }
-
-    public enum EffectType
-    {
-        DAMAGE,
-        BUFF,
+        Physical,
+        Magic
     }
 }

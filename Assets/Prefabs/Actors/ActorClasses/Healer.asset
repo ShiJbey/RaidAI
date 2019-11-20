@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0d36ffcbf51b145bbeff5c62dd68f9, type: 3}
   m_Name: Healer
   m_EditorClassIdentifier: 
-  classID: 0
-  color: {r: 0.9245283, g: 0.87655747, b: 0.87655747, a: 1}
+  classID: 3
+  color: {r: 0.1782218, g: 0.7478464, b: 0.8396226, a: 1}
   health:
     baseValue: 100
   mana:

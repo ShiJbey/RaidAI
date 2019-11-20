@@ -62,6 +62,17 @@ namespace RaidAI
             return false;
         }
 
+        public virtual bool RemoveAllModifiers()
+        {
+            if (statModifiers.Count > 0)
+            {
+                isDirty = true;
+                statModifiers.Clear();
+                return true;
+            }
+            return false;
+        }
+
         public virtual bool RemoveAllModifiersFromSource(object source)
         {
             bool didRemove = false;

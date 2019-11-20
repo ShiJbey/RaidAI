@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaidAI
 {
+    [System.Serializable]
     public class StatModifier
     {
         public readonly float value;

@@ -48,7 +48,7 @@ namespace RaidAI
         public override void AgentReset()
         {
             // Reset the agent's health points
-            health.baseValue = m_playerClass.health.baseValue;
+            health.RemoveAllModifiers();
 
             // Find a respawn point
             SpawnPoint point = m_raidArena.spawnManager.GetAvailableSpawn();
@@ -78,19 +78,19 @@ namespace RaidAI
             action[1] = Input.GetAxis("Vertical");
 
             // Which move to use
-            if (Input.GetKey(KeyCode.Alpha0))
+            if (Input.GetKeyUp(KeyCode.Alpha0))
             {
                 action[2] = 0;
             }
-            if (Input.GetKey(KeyCode.Alpha1))
+            if (Input.GetKeyUp(KeyCode.Alpha1))
             {
                 action[2] = 1;
             }
-            if (Input.GetKey(KeyCode.Alpha2))
+            if (Input.GetKeyUp(KeyCode.Alpha2))
             {
                 action[2] = 2;
             }
-            if (Input.GetKey(KeyCode.Alpha3))
+            if (Input.GetKeyUp(KeyCode.Alpha3))
             {
                 action[2] = 3;
             }
@@ -124,7 +124,7 @@ namespace RaidAI
                     if (m_Hit.collider.tag == "Boss")
                     {
                         Debug.Log("Attacking boss");
-                        m_Hit.collider.GetComponent<BossAgent>().health.baseValue -= attack.Value;
+                        m_Hit.collider.GetComponent<BossAgent>().health.AddModifier(new StatModifier(-attack.Value, StatModifier.StatModType.Flat));
                         m_Hit.collider.GetComponent<BossAgent>().Aggro = transform;
                         SetReward(0.5f);
                         return;
