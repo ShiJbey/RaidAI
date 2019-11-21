@@ -1,4 +1,4 @@
-# Raid AI
+# Raid AI (WIP)
 
 The goal of this project is to train agents how to
 cooperate as a team to defeat the boss opponent at
