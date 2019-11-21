@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace RaidAI
 {
     [System.Serializable]
-    public class StatModifier
+    public class StatModifier: ScriptableObject
     {
         public readonly float value;
         public readonly StatModType type;

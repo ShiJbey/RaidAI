@@ -286,23 +286,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agentParameters:
-    maxStep: 2000
-    resetOnDone: 1
+    maxStep: -1
+    resetOnDone: 0
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 1
-  health:
+  m_mana:
     baseValue: 100
-  mana:
+  m_energy:
     baseValue: 100
-  energy:
-    baseValue: 100
-  attack:
+  m_attack:
     baseValue: 10
-  defense:
+  m_defense:
     baseValue: 10
-  rotateSpeed: 180
-  movementSpeed: 20
-  skills: []
+  m_rotateSpeed: 1
+  m_movementSpeed: 20
+  m_skills: []
   m_raidArena: {fileID: 0}
 --- !u!114 &6710283295751454854
 MonoBehaviour:
@@ -581,27 +579,27 @@ PrefabInstance:
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.18399405
+      value: -0.89
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.2553618
+      value: -0.43306133
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -5.6843426e-14
+      value: -8.526514e-14
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -2.8421713e-14
+      value: -4.263257e-14
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9668456
+      value: 0.9013645
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
@@ -611,7 +609,7 @@ PrefabInstance:
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -29.590002
+      value: -51.324
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
@@ -626,12 +624,12 @@ PrefabInstance:
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000000039690544
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.0422081
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6745509227044427542, guid: a7803af4528ee0249a4a98b72a6ecc0d,
         type: 3}

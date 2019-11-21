@@ -18,6 +18,10 @@ MonoBehaviour:
   m_manaCost:
     baseValue: 0
   m_cooldown:
-    baseValue: 1
+    baseValue: 0
+    m_timeLeft: 0
   m_element: 0
   m_hitbox: {fileID: 11400000, guid: c004eb47bdc173945818b9e851f56b5e, type: 2}
+  m_damage: 10
+  m_statTarget: 0
+  m_effect: {fileID: 0}

@@ -30,20 +30,20 @@ namespace RaidAI
         // Update is called once per frame
         void Update()
         {
-            if (cam != null)
-            {
-                float step = 10f * Time.deltaTime;
-                Vector3 targetDir = cam.position - transform.position;
-                Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
-                transform.rotation = Quaternion.LookRotation(newDir);
-            }
+            //if (cam != null)
+            //{
+            //    float step = 10f * Time.deltaTime;
+            //    Vector3 targetDir = cam.position - transform.position;
+            //    Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+            //    transform.rotation = Quaternion.LookRotation(newDir);
+            //}
             FillBars();
         }
 
         private void FillBars()
         {
             Image[] healthBars = GetComponentsInChildren<Image>();
-            float lifePercentage = actor.health.Value / actor.health.baseValue;
+            float lifePercentage = actor.m_health.Value / actor.m_health.baseValue;
             float amountToFill = Mathf.Min(1.0f, lifePercentage);
             healthBars[0].fillAmount = amountToFill;
 

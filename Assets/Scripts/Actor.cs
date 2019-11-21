@@ -5,26 +5,36 @@ using MLAgents;
 
 namespace RaidAI
 {
+    /// <summary>
+    /// <c>Actor</c> class defines base functionality for all
+    /// the Characters in the game which use AI.
+    /// </summary>
     public abstract class Actor : Agent
     {
+        // Reference to other commonly used components
         protected Rigidbody m_rBody;
 
         // Stats
-        public ActorStat health = new ActorStat(100f);
-        public ActorStat mana = new ActorStat(100f);
-        public ActorStat energy = new ActorStat(100f);
-        public ActorStat attack = new ActorStat(10f);
-        public ActorStat defense = new ActorStat(10f);
+        public HealthStat m_health = new HealthStat(100f);
+        public ActorStat m_mana = new ActorStat(100f);
+        public ActorStat m_energy = new ActorStat(100f);
+        public ActorStat m_attack = new ActorStat(10f);
+        public ActorStat m_defense = new ActorStat(10f);
 
         // Movement
-        public float rotateSpeed = 1f;
-        public float movementSpeed = 20f;
+        public float m_rotateSpeed = 1f;
+        public float m_movementSpeed = 20f;
     
         // Skills
-        public List<ActorSkill> skills;
+        public ActorSkill[] m_skills;
 
         // Arena reference for respawning, etc
         public RaidArena m_raidArena;
+
+        private void Update()
+        {
+            DecrementSkillCooldowns(Time.deltaTime);
+        }
 
         public override void InitializeAgent()
         {
@@ -42,7 +52,7 @@ namespace RaidAI
         public override void AgentAction(float[] vectorAction, string textAction)
         {
             // Check if the actor is dead
-            if (health.Value <= 0.0f)
+            if (IsAlive())
             {
                 SetReward(-1.0f);
                 Done();
@@ -55,11 +65,11 @@ namespace RaidAI
             state.Add(transform.position.x);
             state.Add(transform.position.y);
             state.Add(transform.position.z);
-            state.Add(health.Value);
-            state.Add(mana.Value);
-            state.Add(energy.Value);
-            state.Add(attack.Value);
-            state.Add(defense.Value);
+            state.Add(m_health.Value);
+            state.Add(m_mana.Value);
+            state.Add(m_energy.Value);
+            state.Add(m_attack.Value);
+            state.Add(m_defense.Value);
             return state;
         }
 
@@ -69,33 +79,77 @@ namespace RaidAI
             state.Add(transform.position.x);
             state.Add(transform.position.y);
             state.Add(transform.position.z);
-            state.Add(health.Value);
+            state.Add(m_health.Value);
             return state;
         }
 
+        /// <summary>
+        /// Returns true if the Actor stil has health points
+        /// </summary>
+        /// <returns></returns>
         public bool IsAlive()
         {
-            return health.Value > 0;
+            return m_health.Value > 0;
         }
 
-        // Using Skills
+        /// <summary>
+        /// Decrements the timer for all active cooldowns on this
+        /// actor.
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        public void DecrementSkillCooldowns(float deltaTime)
+        {
+            // Increment the timers
+            for (int i = 0; i < m_skills.Length; i++)
+            {
+                ActorSkill skill = m_skills[i];
+                if (skill.m_cooldown.Active)
+                {
+                    skill.m_cooldown.DecrementCooldown(deltaTime);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Can this Actor use the given skill
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <returns></returns>
+        public bool CanUseSkill(ActorSkill skill)
+        {
+            return (m_energy.Value >= skill.m_energyCost.Value &&
+                m_mana.Value >= skill.m_manaCost.Value);
+        }
+
+        /// <summary>
+        /// Activates one of this actor's skills
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="target"></param>
         public void UseSkill(ActorSkill skill, Actor target)
         {
-            skill.Activate(target);
+            skill.Activate(this, target);
         }
 
-        // Movement
+        /// <summary>
+        /// Rotates the character about the y-axis;
+        /// </summary>
+        /// <param name="axisValue"></param>
         public void RotateActor(float axisValue)
         {
             Vector3 rotateVector = new Vector3(0f, 1f, 0f);
-            rotateVector *= Time.deltaTime * rotateSpeed * axisValue;
+            rotateVector *= Time.deltaTime * m_rotateSpeed * axisValue;
             this.transform.rotation *= Quaternion.Euler(rotateVector);
         }
 
+        /// <summary>
+        /// Moves the Character forward and backward.
+        /// </summary>
+        /// <param name="axisValue"></param>
         public void MoveActor(float axisValue)
         {
             Vector3 movementVector = this.transform.forward.normalized * axisValue;
-            this.transform.position += Time.deltaTime * movementSpeed * movementVector;
+            this.transform.position += Time.deltaTime * m_movementSpeed * movementVector;
         }
     }
 }

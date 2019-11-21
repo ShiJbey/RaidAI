@@ -11,11 +11,9 @@ namespace RaidAI
         public PlayerClass m_playerClass;
         public Transform m_boss;
 
-        
         private Material m_Material;
         private RaycastHit m_Hit;
         private bool m_HitDetect;
-        private float m_MaxDistance;
 
 
         public override void InitializeAgent()
@@ -23,11 +21,11 @@ namespace RaidAI
             base.InitializeAgent();
 
             // Set the stats using the PlayerClass
-            health.baseValue = m_playerClass.health.baseValue;
-            mana.baseValue = m_playerClass.mana.baseValue;
-            energy.baseValue = m_playerClass.energy.baseValue;
-            attack.baseValue = m_playerClass.attack.baseValue;
-            defense.baseValue = m_playerClass.defense.baseValue;
+            m_health.baseValue = m_playerClass.health.baseValue;
+            m_mana.baseValue = m_playerClass.mana.baseValue;
+            m_energy.baseValue = m_playerClass.energy.baseValue;
+            m_attack.baseValue = m_playerClass.attack.baseValue;
+            m_defense.baseValue = m_playerClass.defense.baseValue;
             
             // Set the agent color
             m_Material = GetComponent<Renderer>().material;
@@ -40,15 +38,12 @@ namespace RaidAI
             m_rBody = GetComponent<Rigidbody>();
             m_rBody.angularVelocity = Vector3.zero;
             m_rBody.velocity = Vector3.zero;
-
-            // Box Caster
-            m_MaxDistance = 2.0f;
         }
 
         public override void AgentReset()
         {
             // Reset the agent's health points
-            health.RemoveAllModifiers();
+            m_health.RemoveAllModifiers();
 
             // Find a respawn point
             SpawnPoint point = m_raidArena.spawnManager.GetAvailableSpawn();
@@ -65,7 +60,6 @@ namespace RaidAI
                 m_rBody = GetComponent<Rigidbody>();
                 m_rBody.angularVelocity = Vector3.zero;
                 m_rBody.velocity = Vector3.zero;
-                m_MaxDistance = 2.0f;
             }
         }
 
@@ -115,18 +109,41 @@ namespace RaidAI
 
             if (vectorAction[2] != 0f)
             {
-                // Fire the laser
-                int layerMask = 1 << 9;
-                Vector3 boxCastHalfExt = new Vector3(0.5f, 0.5f, 0.5f);
-                m_HitDetect = Physics.BoxCast(transform.position, boxCastHalfExt, transform.forward, out m_Hit, transform.rotation, m_MaxDistance, layerMask);
+                // if vectorAction[2] == 0 then we dont want to attack
+                // so attacks are mapped to the interval [1,infinity)
+                int actionIndex = Mathf.RoundToInt(vectorAction[2]) - 1;
+
+                // Check that the skill exists
+                if (actionIndex < 0 || actionIndex >= m_skills.Length)
+                {
+                    // Punish for trying to use a move that doesnt exist
+                    AddReward(-0.5f);
+                    return;
+                }
+
+                ActorSkill skill = m_skills[actionIndex];
+
+                // Check if this action has an active cooldown
+                if (skill.m_cooldown.Active)
+                {
+                    // Punish for trying to use a move that is in cooldown
+                    AddReward(-0.3f);
+                    return;
+                }
+
+                // Perform a boxcast with the hitbox for this skill
+                m_HitDetect = Physics.BoxCast(transform.position + skill.m_hitbox.m_centerOffset,
+                    skill.m_hitbox.m_halfExt, transform.forward, out m_Hit, transform.rotation,
+                    skill.m_hitbox.m_maxDistance, skill.m_hitbox.GetLayerMask());
+
                 if (m_HitDetect)
                 {
                     if (m_Hit.collider.tag == "Boss")
                     {
                         Debug.Log("Attacking boss");
-                        m_Hit.collider.GetComponent<BossAgent>().health.AddModifier(new StatModifier(-attack.Value, StatModifier.StatModType.Flat));
+                        m_Hit.collider.GetComponent<BossAgent>().m_health.ApplyDamage(-m_attack.Value);
                         m_Hit.collider.GetComponent<BossAgent>().Aggro = transform;
-                        SetReward(0.5f);
+                        SetReward(1.0f);
                         return;
                     }
                     
@@ -146,7 +163,7 @@ namespace RaidAI
             }
 
             // Fell off platform
-            if (transform.position.y < 0)
+            if (transform.position.y < -1f)
             {
                 SetReward(-1.0f);
                 Done();
@@ -156,35 +173,43 @@ namespace RaidAI
             SetReward(-1.0f);
 
             // Check if the actor is dead
-            if (health.Value <= 0.0f)
+            if (m_health.Value <= 0.0f)
             {
                 SetReward(-1.0f);
                 Done();
+                return;
             }
-
-            base.AgentAction(vectorAction, textAction);
         }
 
         void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
+            // Draw ray indicating the direction the actor is facing
+            DrawForwardRay();
 
-            //Check if there has been a hit yet
-            if (m_HitDetect)
-            {
-                //Draw a Ray forward from GameObject toward the hit
-                Gizmos.DrawRay(transform.position, transform.forward.normalized * m_Hit.distance);
-                //Draw a cube that extends to where the hit exists
-                Gizmos.DrawWireCube(transform.position + transform.forward.normalized * m_Hit.distance, transform.localScale);
-            }
-            //If there hasn't been a hit yet, draw the ray at the maximum distance
-            else
-            {
-                //Draw a Ray forward from GameObject toward the maximum distance
-                Gizmos.DrawRay(transform.position, transform.forward * m_MaxDistance);
-                //Draw a cube at the maximum distance
-                Gizmos.DrawWireCube(transform.position + transform.forward * m_MaxDistance, transform.localScale);
-            }
+            //Gizmos.color = Color.red;
+
+            ////Check if there has been a hit yet
+            //if (m_HitDetect)
+            //{
+            //    //Draw a Ray forward from GameObject toward the hit
+            //    Gizmos.DrawRay(transform.position, transform.forward.normalized * m_Hit.distance);
+            //    //Draw a cube that extends to where the hit exists
+            //    Gizmos.DrawWireCube(transform.position + transform.forward.normalized * m_Hit.distance, transform.localScale);
+            //}
+            ////If there hasn't been a hit yet, draw the ray at the maximum distance
+            //else
+            //{
+            //    //Draw a Ray forward from GameObject toward the maximum distance
+            //    Gizmos.DrawRay(transform.position, transform.forward * m_MaxDistance);
+            //    //Draw a cube at the maximum distance
+            //    Gizmos.DrawWireCube(transform.position + transform.forward * m_MaxDistance, transform.localScale);
+            //}
+        }
+
+        void DrawForwardRay()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(transform.position, transform.forward.normalized);
         }
     }
 }

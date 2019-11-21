@@ -280,6 +280,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1993366400250711946, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1998846219773086834, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -352,6 +357,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
+      propertyPath: m_skills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
       propertyPath: raidArena
       value: 
       objectReference: {fileID: 375653991}
@@ -391,6 +401,12 @@ PrefabInstance:
       propertyPath: m_playerClass
       value: 
       objectReference: {fileID: 11400000, guid: 0637ec04faa713347b228e0086a9c93f,
+        type: 2}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_skills.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: d0fdd02836931b4489488bf77c8eaa4b,
         type: 2}
     - target: {fileID: 1141170102, guid: 5ad291dd9cecb444cbef9dc9d9fda565, type: 3}
       propertyPath: m_LocalRotation.y
@@ -954,6 +970,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1993366400250711946, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1998846219773086834, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1031,6 +1052,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
+      propertyPath: m_skills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
       propertyPath: raidArena
       value: 
       objectReference: {fileID: 375653991}
@@ -1077,6 +1103,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: d0fdd02836931b4489488bf77c8eaa4b,
         type: 2}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_skills.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: d0fdd02836931b4489488bf77c8eaa4b,
+        type: 2}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: agentParameters.resetOnDone
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1141170102, guid: 5ad291dd9cecb444cbef9dc9d9fda565, type: 3}
       propertyPath: m_LocalRotation.y
       value: 1
@@ -1475,6 +1512,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
+      propertyPath: m_skills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
       propertyPath: raidArena
       value: 
       objectReference: {fileID: 375653991}
@@ -1504,6 +1546,12 @@ PrefabInstance:
       propertyPath: m_playerClass
       value: 
       objectReference: {fileID: 11400000, guid: ad35e676f0fd7a24698852561d96b94b,
+        type: 2}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_skills.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: d0fdd02836931b4489488bf77c8eaa4b,
         type: 2}
     - target: {fileID: 1141170102, guid: 5ad291dd9cecb444cbef9dc9d9fda565, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1623,16 +1671,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 8041048236655440605, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
-        type: 3}
-      propertyPath: m_UseHeuristic
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1650232778538080713, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 963194228}
+    - target: {fileID: 8041048236655440605, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_UseHeuristic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ad291dd9cecb444cbef9dc9d9fda565, type: 3}
 --- !u!1 &1411086848
@@ -1744,6 +1792,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1993366400250711946, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1998846219773086834, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1816,6 +1869,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
         type: 3}
+      propertyPath: m_skills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
       propertyPath: raidArena
       value: 
       objectReference: {fileID: 375653991}
@@ -1855,6 +1913,12 @@ PrefabInstance:
       propertyPath: m_playerClass
       value: 
       objectReference: {fileID: 11400000, guid: fe216f4240159ac4abae9601e256eae8,
+        type: 2}
+    - target: {fileID: 8041048236655440604, guid: 5ad291dd9cecb444cbef9dc9d9fda565,
+        type: 3}
+      propertyPath: m_skills.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: d0fdd02836931b4489488bf77c8eaa4b,
         type: 2}
     - target: {fileID: 1141170102, guid: 5ad291dd9cecb444cbef9dc9d9fda565, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2665,6 +2729,11 @@ PrefabInstance:
       propertyPath: m_raidArena
       value: 
       objectReference: {fileID: 375653991}
+    - target: {fileID: 6710283295751454853, guid: bea50ef89745e8c4f9dc014a26cf6e20,
+        type: 3}
+      propertyPath: agentParameters.resetOnDone
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6710283295751454854, guid: bea50ef89745e8c4f9dc014a26cf6e20,
         type: 3}
       propertyPath: m_UseHeuristic

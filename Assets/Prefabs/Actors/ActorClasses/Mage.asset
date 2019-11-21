@@ -17,7 +17,7 @@ MonoBehaviour:
   health:
     baseValue: 100
   mana:
-    baseValue: 100
+    baseValue: 200
   energy:
     baseValue: 100
   attack:

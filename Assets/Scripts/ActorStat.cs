@@ -14,7 +14,6 @@ namespace RaidAI
         protected float value;
         protected bool isDirty;
         
-
         protected readonly List<StatModifier> statModifiers;
         public readonly ReadOnlyCollection<StatModifier> StatModifiers;
 
