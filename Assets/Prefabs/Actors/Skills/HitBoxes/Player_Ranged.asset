@@ -16,3 +16,4 @@ MonoBehaviour:
   m_maxDistance: 5
   m_centerOffset: {x: 0, y: 0, z: 0}
   m_layers: 09000000
+  m_timeToLive: 1

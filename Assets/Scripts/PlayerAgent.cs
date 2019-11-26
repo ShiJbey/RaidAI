@@ -10,10 +10,8 @@ namespace RaidAI
     {
         public PlayerClass m_playerClass;
         public Transform m_boss;
-
+   
         private Material m_Material;
-        private RaycastHit m_Hit;
-        private bool m_HitDetect;
 
 
         public override void InitializeAgent()
@@ -132,17 +130,22 @@ namespace RaidAI
                 }
 
                 // Perform a boxcast with the hitbox for this skill
-                m_HitDetect = Physics.BoxCast(transform.position + skill.m_hitbox.m_centerOffset,
-                    skill.m_hitbox.m_halfExt, transform.forward, out m_Hit, transform.rotation,
+                RaycastHit hit;
+                bool hitDetect = Physics.BoxCast(transform.position + skill.m_hitbox.m_centerOffset,
+                    skill.m_hitbox.m_halfExt, transform.forward, out hit, transform.rotation,
                     skill.m_hitbox.m_maxDistance, skill.m_hitbox.GetLayerMask());
 
-                if (m_HitDetect)
+                // Create a new hitbox gizmo
+                m_activeHitboxes.Add(new HitboxGizmo(hit, skill.m_hitbox));
+
+
+                if (hitDetect)
                 {
-                    if (m_Hit.collider.tag == "Boss")
+                    if (hit.collider.tag == "Boss")
                     {
                         Debug.Log("Attacking boss");
-                        m_Hit.collider.GetComponent<BossAgent>().m_health.ApplyDamage(-m_attack.Value);
-                        m_Hit.collider.GetComponent<BossAgent>().Aggro = transform;
+                        hit.collider.GetComponent<BossAgent>().m_health.ApplyDamage(-m_attack.Value);
+                        hit.collider.GetComponent<BossAgent>().Aggro = transform;
                         SetReward(1.0f);
                         return;
                     }
@@ -185,31 +188,18 @@ namespace RaidAI
         {
             // Draw ray indicating the direction the actor is facing
             DrawForwardRay();
-
-            //Gizmos.color = Color.red;
-
-            ////Check if there has been a hit yet
-            //if (m_HitDetect)
-            //{
-            //    //Draw a Ray forward from GameObject toward the hit
-            //    Gizmos.DrawRay(transform.position, transform.forward.normalized * m_Hit.distance);
-            //    //Draw a cube that extends to where the hit exists
-            //    Gizmos.DrawWireCube(transform.position + transform.forward.normalized * m_Hit.distance, transform.localScale);
-            //}
-            ////If there hasn't been a hit yet, draw the ray at the maximum distance
-            //else
-            //{
-            //    //Draw a Ray forward from GameObject toward the maximum distance
-            //    Gizmos.DrawRay(transform.position, transform.forward * m_MaxDistance);
-            //    //Draw a cube at the maximum distance
-            //    Gizmos.DrawWireCube(transform.position + transform.forward * m_MaxDistance, transform.localScale);
-            //}
         }
 
         void DrawForwardRay()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawRay(transform.position, transform.forward.normalized);
+            Gizmos.DrawRay(transform.position, transform.forward.normalized * transform.localScale.z * 2);
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            // Draw Hit boxes for used skills
+            DrawHitboxes();
         }
     }
 }

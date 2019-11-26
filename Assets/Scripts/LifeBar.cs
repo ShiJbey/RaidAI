@@ -24,7 +24,7 @@ namespace RaidAI
         // Start is called before the first frame update
         void Start()
         {
-            FillBars();
+            FillBar();
         }
 
         // Update is called once per frame
@@ -37,45 +37,15 @@ namespace RaidAI
             //    Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
             //    transform.rotation = Quaternion.LookRotation(newDir);
             //}
-            FillBars();
+            FillBar();
         }
 
-        private void FillBars()
+        private void FillBar()
         {
             Image[] healthBars = GetComponentsInChildren<Image>();
-            float lifePercentage = actor.m_health.Value / actor.m_health.baseValue;
+            float lifePercentage = actor.m_health.Value / actor.m_health.MaxValue;
             float amountToFill = Mathf.Min(1.0f, lifePercentage);
             healthBars[0].fillAmount = amountToFill;
-
-            //float remainder = lifePercentage;
-
-            //// Fill existing bars and remove unused bars
-            //for (int i = 0; i < healthBars.Length; i++)
-            //{
-            //    if (remainder > 0.0f)
-            //    {
-            //        float amountToFill = Mathf.Min(1.0f, remainder);
-            //        healthBars[i].fillAmount = amountToFill;
-            //        remainder -= amountToFill;
-            //    }
-            //    else
-            //    {
-            //        Destroy(healthBars[i]);
-            //    }
-            //}
-
-            ////int addedCount = 0;
-            //// Add new bars if necessary
-            //while (remainder > 0)
-            //{
-            //    float amountToFill = Mathf.Min(1.0f, remainder);
-            //    remainder -= amountToFill;
-            //    // Spawn a new health bar and set the amount
-            //    GameObject additionalBar = Instantiate(healthBarPrefab);
-            //    additionalBar.transform.parent = transform;
-            //    // Set the fill
-            //    additionalBar.GetComponent<Image>().fillAmount = amountToFill;
-            //}
         }
     }
 }

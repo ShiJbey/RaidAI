@@ -27,6 +27,8 @@ namespace RaidAI
     
         // Skills
         public ActorSkill[] m_skills;
+        // Active hitboxes from skills
+        public List<HitboxGizmo> m_activeHitboxes;
 
         // Arena reference for respawning, etc
         public RaidArena m_raidArena;
@@ -34,6 +36,7 @@ namespace RaidAI
         private void Update()
         {
             DecrementSkillCooldowns(Time.deltaTime);
+            UpdateHitboxes(Time.deltaTime);
         }
 
         public override void InitializeAgent()
@@ -129,6 +132,26 @@ namespace RaidAI
         public void UseSkill(ActorSkill skill, Actor target)
         {
             skill.Activate(this, target);
+        }
+
+        private void UpdateHitboxes(float elapsedTime)
+        {
+            for (int i = m_activeHitboxes.Count - 1; i >= 0; i--)
+            {
+                m_activeHitboxes[i].Update(elapsedTime);
+                if (m_activeHitboxes[i].TimeToLive <= 0)
+                {
+                    m_activeHitboxes.RemoveAt(i);
+                }
+            }
+        }
+
+        protected void DrawHitboxes()
+        {
+            foreach (HitboxGizmo hitbox in m_activeHitboxes)
+            {
+                hitbox.Draw(transform, transform.localToWorldMatrix);
+            }
         }
 
         /// <summary>

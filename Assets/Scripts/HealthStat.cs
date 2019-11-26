@@ -8,19 +8,40 @@ namespace RaidAI
     [System.Serializable]
     public class HealthStat : ActorStat
     {
-        private float m_damage = 0f;
+
+        public float m_damage = 0f;
+        private float m_lastDamage = 0f;
+        private float m_maxValue = 0f;
 
         public HealthStat(float value) : base(value)
         {
 
         }
 
+        public float MaxValue
+        {
+            get
+            {
+                if (isDirty || lastBaseValue != baseValue || m_lastDamage != m_damage)
+                {
+                    if (m_damage < 0) m_damage = 0;
+                    m_lastDamage = m_damage;
+                    lastBaseValue = baseValue;
+                    value = CalculateFinalValue();
+                    isDirty = false;
+                }
+                return m_maxValue;
+            }
+        }
+
         public override float Value
         {
             get
             {
-                if (isDirty || lastBaseValue != baseValue)
+                if (isDirty || lastBaseValue != baseValue || m_lastDamage != m_damage)
                 {
+                    if (m_damage < 0) m_damage = 0;
+                    m_lastDamage = m_damage;
                     lastBaseValue = baseValue;
                     value = CalculateFinalValue();
                     isDirty = false;
@@ -31,8 +52,8 @@ namespace RaidAI
 
         protected override float CalculateFinalValue()
         {
-            float finalValue = base.CalculateFinalValue();
-            finalValue -= m_damage;
+            m_maxValue = base.CalculateFinalValue();
+            float finalValue = m_maxValue - m_damage;
             return (float)Math.Round(finalValue, 4);
         }
 

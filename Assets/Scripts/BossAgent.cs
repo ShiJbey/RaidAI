@@ -94,5 +94,17 @@ namespace RaidAI
 
             SetReward(-1.0f);
         }
+
+        void OnDrawGizmos()
+        {
+            // Draw ray indicating the direction the actor is facing
+            DrawForwardRay();
+        }
+
+        void DrawForwardRay()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(transform.position, transform.forward.normalized * transform.localScale.z * 1.5f);
+        }
     }
 }
