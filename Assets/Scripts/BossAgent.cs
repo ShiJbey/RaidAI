@@ -45,7 +45,7 @@ namespace RaidAI
 
             // Reset transform
             transform.position = new Vector3(0f, 3f, 0f);
-            transform.rotation = Quaternion.identity;
+             transform.rotation = Quaternion.identity;
 
             // Reset the rigid body
             m_rBody = GetComponent<Rigidbody>();
